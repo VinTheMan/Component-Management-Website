@@ -1,0 +1,9 @@
+update-repo:
+  stage: .syncing
+  script:
+    - git clone --mirror https://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@github.com/VinTheMan/Component-Management-Website.git
+    - cd Component-Management-Website.git
+    - git remote remove origin
+    - git push --mirror "http://GIT_PUSH_TOKEN:glpat-PD6a-8f_4pybeYhJ9X_a@GITLAB_SERVER/GITLAB_ORG/GITLAB_REPO.git"
+stages:
+    - .syncing
