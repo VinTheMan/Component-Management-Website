@@ -176,7 +176,7 @@ const dialogVisibleUpdate = (val: boolean) => {
               <VSelect
                 v-model="userData.language"
                 label="Language"
-                :items="['English', 'Spanish', 'Portuguese', 'Russian', 'French', 'German']"
+                :items="['English', 'Spanish', 'Portuguese', 'Russian', 'French', 'German', 'Chinese Traditional', 'Chinese Simplified']"
               />
             </VCol>
 
@@ -188,7 +188,7 @@ const dialogVisibleUpdate = (val: boolean) => {
               <VSelect
                 v-model="userData.country"
                 label="Country"
-                :items="['USA', 'UK', 'Spain', 'Russia', 'France', 'Germany']"
+                :items="['USA', 'UK', 'Spain', 'Russia', 'France', 'Germany', 'Taiwan', 'China']"
               />
             </VCol>
 

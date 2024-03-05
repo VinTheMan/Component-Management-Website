@@ -11,15 +11,24 @@ const i18nCompLanguages: I18nLanguage[] = [
     i18nLang: 'en',
   },
   {
-    label: 'French',
+    label: 'Français',
     i18nLang: 'fr',
   },
   {
-    label: 'Arabic',
+    label: 'عربي',
     i18nLang: 'ar',
+  },
+  {
+    label: '繁體中文',
+    i18nLang: 'cht',
+  },
+  {
+    label: '简体中文',
+    i18nLang: 'chs',
   },
 ]
 
+// set the layout to the right
 const handleLangChange = (lang: string) => {
   isAppRtl.value = lang === 'ar'
 }
