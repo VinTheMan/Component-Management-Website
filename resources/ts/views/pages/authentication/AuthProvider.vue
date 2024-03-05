@@ -33,6 +33,7 @@ const authProviders = [
     :key="link.icon"
     :icon="link.icon"
     variant="text"
+    size="38"
     :color="global.name.value === 'dark' ? link.colorInDark : link.color"
   />
 </template>

@@ -1,37 +1,71 @@
 <script lang="ts">
-import { useDisplay } from 'vuetify'
-import VerticalNav from '@layouts/components/VerticalNav.vue'
+import type { PropType } from 'vue'
+import { useLayouts } from '@layouts'
+import { VerticalNav } from '@layouts/components'
+import type { VerticalNavItems } from '@layouts/types'
 
 export default defineComponent({
+  props: {
+    navItems: {
+      type: Array as PropType<VerticalNavItems>,
+      required: true,
+    },
+    verticalNavAttrs: {
+      type: Object as PropType<Record<string, unknown>>,
+      default: () => ({}),
+    },
+  },
   setup(props, { slots }) {
+    const { y: windowScrollY } = useWindowScroll()
+    const { width: windowWidth } = useWindowSize()
+    const { _layoutClasses: layoutClasses, isLessThanOverlayNavBreakpoint, isNavbarBlurEnabled } = useLayouts()
+
     const isOverlayNavActive = ref(false)
     const isLayoutOverlayVisible = ref(false)
     const toggleIsOverlayNavActive = useToggle(isOverlayNavActive)
-
-    const route = useRoute()
-    const { mdAndDown } = useDisplay()
 
     // ℹ️ This is alternative to below two commented watcher
     // We want to show overlay if overlay nav is visible and want to hide overlay if overlay is hidden and vice versa.
     syncRef(isOverlayNavActive, isLayoutOverlayVisible)
 
+    // watch(isOverlayNavActive, value => {
+    //   // Sync layout overlay with overlay nav
+    //   isLayoutOverlayVisible.value = value
+    // })
+
+    // watch(isLayoutOverlayVisible, value => {
+    //   // If overlay is closed via click, close hide overlay nav
+    //   if (!value) isOverlayNavActive.value = false
+    // })
+
+    // ℹ️ Hide overlay if user open overlay nav in <md and increase the window width without closing overlay nav
+    watch(windowWidth, value => {
+      if (!isLessThanOverlayNavBreakpoint.value(value) && isLayoutOverlayVisible.value)
+        isLayoutOverlayVisible.value = false
+    })
+
+    const router = useRouter()
+    const shallShowPageLoading = ref(false)
+
     return () => {
+      const verticalNavAttrs = toRef(props, 'verticalNavAttrs')
+
+      const { wrapper: verticalNavWrapper, wrapperProps: verticalNavWrapperProps, ...additionalVerticalNavAttrs } = verticalNavAttrs.value
+
       // 👉 Vertical nav
       const verticalNav = h(
         VerticalNav,
-        { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive },
+        { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive, navItems: props.navItems, ...additionalVerticalNavAttrs },
         {
           'nav-header': () => slots['vertical-nav-header']?.(),
           'before-nav-items': () => slots['before-vertical-nav-items']?.(),
-          'default': () => slots['vertical-nav-content']?.(),
-          'after-nav-items': () => slots['after-vertical-nav-items']?.(),
         },
       )
 
       // 👉 Navbar
       const navbar = h(
         'header',
-        { class: ['layout-navbar navbar-blur'] },
+        { class: ['layout-navbar', { 'navbar-blur': isNavbarBlurEnabled.value }] },
         [
           h(
             'div',
@@ -43,10 +77,27 @@ export default defineComponent({
         ],
       )
 
+      // 👉 Content area
+      let mainChildren = slots.default?.()
+
+      // 💡 Only show loading and attach `beforeEach` & `afterEach` hooks if `content-loading` slot is used
+      if (slots['content-loading']) {
+        router.beforeEach(() => {
+          console.info('setting to true')
+          shallShowPageLoading.value = true
+        })
+        router.afterEach(() => {
+          console.info('setting to false')
+          shallShowPageLoading.value = false
+        })
+
+        mainChildren = shallShowPageLoading.value ? slots['content-loading']?.() : slots.default?.()
+      }
+
       const main = h(
         'main',
         { class: 'layout-page-content' },
-        h('div', { class: 'page-content-container' }, slots.default?.()),
+        h('div', { class: 'page-content-container' }, mainChildren),
       )
 
       // 👉 Footer
@@ -73,15 +124,9 @@ export default defineComponent({
 
       return h(
         'div',
-        {
-          class: [
-            'layout-wrapper layout-nav-type-vertical layout-navbar-static layout-footer-static layout-content-width-fluid',
-            mdAndDown.value && 'layout-overlay-nav',
-            route.meta.layoutWrapperClasses,
-          ],
-        },
+        { class: ['layout-wrapper', ...layoutClasses.value(windowWidth.value, windowScrollY.value)] },
         [
-          verticalNav,
+          verticalNavWrapper ? h(verticalNavWrapper, verticalNavWrapperProps, { default: () => verticalNav }) : verticalNav,
           h(
             'div',
             { class: 'layout-content-wrapper' },

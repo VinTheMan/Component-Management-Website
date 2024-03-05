@@ -31,6 +31,7 @@ const isCardDetailsVisible = ref(false)
       <VCard>
         <VImg
           :src="pages1"
+          height="233"
           cover
         />
 
@@ -51,7 +52,11 @@ const isCardDetailsVisible = ref(false)
       md="4"
     >
       <VCard>
-        <VImg :src="pages2" />
+        <VImg
+          :src="pages2"
+          height="210"
+          cover
+        />
 
         <VCardText class="position-relative">
           <!-- User Avatar -->
@@ -63,7 +68,7 @@ const isCardDetailsVisible = ref(false)
 
           <!-- Title, Subtitle & Action Button -->
           <div class="d-flex justify-space-between flex-wrap pt-8">
-            <div class="me-2 mb-2">
+            <div class="mb-1">
               <VCardTitle class="pa-0">
                 Robert Meyer
               </VCardTitle>
@@ -71,19 +76,21 @@ const isCardDetailsVisible = ref(false)
                 London, UK
               </VCardSubtitle>
             </div>
-            <VBtn>send request</VBtn>
+            <VBtn class="my-auto">
+              send request
+            </VBtn>
           </div>
 
           <!--  Mutual Friends -->
-          <div class="d-flex justify-space-between align-center mt-4">
-            <span class="font-weight-medium">18 mutual friends</span>
+          <div class="d-flex justify-space-between align-center mt-8">
+            <span class="font-weight-medium text-sm">18 mutual friends</span>
 
             <div class="v-avatar-group">
               <VAvatar
                 v-for="avatar in avatars"
                 :key="avatar"
                 :image="avatar"
-                size="40"
+                size="45"
               />
             </div>
           </div>
@@ -100,8 +107,8 @@ const isCardDetailsVisible = ref(false)
       <VCard>
         <VImg
           :src="pages3"
+          height="225"
           cover
-          max-height="280"
         />
 
         <VCardItem>
@@ -109,18 +116,27 @@ const isCardDetailsVisible = ref(false)
         </VCardItem>
 
         <VCardText>
-          <div class="mb-4">
-            Although cards can support multiple actions, UI controls, and an overflow menu.
-          </div>
+          Although cards can support multiple actions, UI controls, and an overflow menu.
+        </VCardText>
 
-          <VBtn
-            variant="text"
-            density="comfortable"
-            @click="isCardDetailsVisible = !isCardDetailsVisible"
-          >
+        <VCardActions>
+          <VBtn @click="isCardDetailsVisible = !isCardDetailsVisible">
             Details
           </VBtn>
-        </VCardText>
+
+          <VSpacer />
+
+          <VBtn
+            icon
+            size="small"
+            @click="isCardDetailsVisible = !isCardDetailsVisible"
+          >
+            <VIcon
+              size="24"
+              :icon="isCardDetailsVisible ? 'bx-chevron-up' : 'bx-chevron-down'"
+            />
+          </VBtn>
+        </VCardActions>
 
         <VExpandTransition>
           <div v-show="isCardDetailsVisible">
@@ -143,7 +159,6 @@ const isCardDetailsVisible = ref(false)
           <div class="ma-auto pa-5">
             <VImg
               width="137"
-              height="176"
               :src="eCommerce2"
             />
           </div>
@@ -160,7 +175,7 @@ const isCardDetailsVisible = ref(false)
             </VCardText>
 
             <VCardText class="text-subtitle-1">
-              <span>Price :</span> <span class="font-weight-medium">$899</span>
+              <span>Price :</span> <span class="font-weight-bold">$899</span>
             </VCardText>
 
             <VCardActions class="justify-space-between">
@@ -191,17 +206,16 @@ const isCardDetailsVisible = ref(false)
               <VCardTitle>Stumptown Roasters</VCardTitle>
             </VCardItem>
 
-            <VCardText class="d-flex align-center flex-wrap text-body-1">
-              <VRating
-                :model-value="5"
-                readonly
-                class="me-3"
-                density="compact"
-              />
-              <span>5 Star | 98 reviews</span>
-            </VCardText>
-
             <VCardText>
+              <div class="d-flex align-center flex-wrap text-body-1 mb-1 ms-n2">
+                <VRating
+                  :model-value="4"
+                  readonly
+                  class="me-3"
+                  density="compact"
+                />
+                <span>4 Star | 98 reviews</span>
+              </div>
               Before there was a United States of America, there were coffee houses, because how are you supposed to build.
             </VCardText>
 
@@ -287,7 +301,7 @@ const isCardDetailsVisible = ref(false)
                 <p class="d-flex align-center mb-6">
                   <VIcon
                     color="primary"
-                    icon="bx-lock-open"
+                    icon="bx-lock-open-alt"
                   />
                   <span class="ms-3">Full Access</span>
                 </p>
@@ -364,11 +378,11 @@ const isCardDetailsVisible = ref(false)
     >
       <VCard title="Influencing The Influencer">
         <VCardText>
-          Computers have become ubiquitous in almost every facet of our lives. At work, desk jockeys spend hours in front of their desktops, while delivery people scan bar codes with handhelds and workers in the field stay in touch.
-        </VCardText>
+          <p>Computers have become ubiquitous in almost every facet of our lives. At work, desk jockeys spend hours in front of their desktops, while delivery people scan bar codes with handhelds and workers in the field stay in touch.</p>
 
-        <VCardText>
-          If you're in the market for new desktops, notebooks, or PDAs, there are a myriad of choices. Here's a rundown of some of the best systems available.
+          <p class="mb-0">
+            If you're in the market for new desktops, notebooks, or PDAs, there are a myriad of choices.
+          </p>
         </VCardText>
 
         <VCardActions>
@@ -384,24 +398,20 @@ const isCardDetailsVisible = ref(false)
       md="6"
     >
       <VCard title="The Best Answers">
-        <VCardText class="d-flex align-center flex-wrap">
-          <VRating
-            :model-value="5"
-            readonly
-            density="compact"
-            class="me-3"
-          />
-          <span class="text-subtitle-2">5 Star | 98 reviews</span>
+        <VCardText>
+          <div class="d-flex align-center flex-wrap gap-2 mb-1 ms-n2">
+            <VRating
+              :model-value="4"
+              readonly
+              density="compact"
+            />
+            <span class="text-body-1">4 Star | 98 reviews</span>
+          </div>
+          If you are looking for a new way to promote your business that won't cost you more money, maybe printing is one of the options you won't resist.
         </VCardText>
 
         <VCardText>
-          <p>
-            If you are looking for a new way to promote your business that won't cost you more money, maybe printing is one of the options you won't resist.
-          </p>
-
-          <p class="mb-0">
-            become fast, easy and simple. If you want your promotional material to be an eye-catching
-          </p>
+          become fast, easy and simple. If you want your promotional material to be an eye-catching
         </VCardText>
 
         <VCardActions>
@@ -422,11 +432,11 @@ const isCardDetailsVisible = ref(false)
           <VAvatar
             color="primary"
             variant="tonal"
-            size="50"
-            class="mb-4"
+            size="56"
+            class="mb-2"
           >
             <VIcon
-              size="2rem"
+              size="32"
               icon="bx-help-circle"
             />
           </VAvatar>
@@ -437,10 +447,9 @@ const isCardDetailsVisible = ref(false)
         </VCardText>
 
         <VCardText>
-          <p>
-            According to us blisters are a very common thing and we come across them very often in our daily lives. It is a very common occurrence like cold or fever depending upon your lifestyle.
-          </p>
+          According to us blisters are a very common thing and we come across them very often in our daily lives. It is a very common occurrence like cold or fever depending upon your lifestyle.
         </VCardText>
+
         <VCardText>
           <VBtn variant="elevated">
             Contact Now
@@ -454,8 +463,8 @@ const isCardDetailsVisible = ref(false)
 <style lang="scss" scoped>
 .avatar-center {
   position: absolute;
-  border: 3px solid rgb(var(--v-theme-surface));
-  inset-block-start: -2rem;
+  border: 5px solid rgb(var(--v-theme-surface));
+  inset-block-start: -2.5rem;
   inset-inline-start: 1rem;
 }
 

@@ -2,10 +2,15 @@
 
 // Layout
 @use "vertical-nav";
+@use "horizontal-nav";
 @use "default-layout-w-vertical-nav";
+@use "default-layout-w-horizontal-nav";
 
 // Components
 @use "components";
+
+// Skins
+@use "skins";
 
 // Dark
 @use "dark";

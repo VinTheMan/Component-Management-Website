@@ -12,15 +12,15 @@
         class="mx-1"
       />
       By <a
-        href="mailto:Vincent6_Yeh@pegatroncorp.com"
+        href="https://themeselection.com"
         target="_blank"
         rel="noopener noreferrer"
         class="text-primary ms-1"
-      >Vincent6 Yeh</a>
+      >ThemeSelection</a>
     </span>
     <!-- 👉 Footer: right content -->
     <span class="d-md-flex gap-x-4 text-primary d-none">
-      <!-- <a
+      <a
         href="https://themeselection.com/license/"
         target="noopener noreferrer"
       >License</a>
@@ -31,7 +31,7 @@
       <a
         href="https://demos.themeselection.com/sneat-vuetify-vuejs-admin-template/documentation/guide/laravel-integration/folder-structure.html"
         target="noopener noreferrer"
-      >Documentation</a> -->
+      >Documentation</a>
     </span>
   </div>
 </template>

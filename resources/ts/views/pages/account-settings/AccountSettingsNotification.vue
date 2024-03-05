@@ -4,12 +4,12 @@ const recentDevices = ref(
     {
       type: 'New for you',
       email: true,
-      browser: true,
-      app: true,
+      browser: false,
+      app: false,
     },
     {
       type: 'Account activity',
-      email: true,
+      email: false,
       browser: true,
       app: true,
     },
@@ -17,12 +17,12 @@ const recentDevices = ref(
       type: 'A new browser used to sign in',
       email: true,
       browser: true,
-      app: false,
+      app: true,
     },
     {
       type: 'A new device is linked',
-      email: true,
-      browser: false,
+      email: false,
+      browser: true,
       app: false,
     },
   ],
@@ -38,44 +38,45 @@ const selectedNotification = ref('Only when I\'m online')
       <a href="javascript:void(0)">Request Permission</a>
     </VCardText>
 
-    <VTable class="text-no-wrap">
-      <thead>
-        <tr>
-          <th scope="col">
-            Type
-          </th>
-          <th scope="col">
-            EMAIL
-          </th>
-          <th scope="col">
-            BROWSER
-          </th>
-          <th scope="col">
-            App
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="device in recentDevices"
-          :key="device.type"
-        >
-          <td>
-            {{ device.type }}
-          </td>
-          <td>
-            <VCheckbox v-model="device.email" />
-          </td>
-          <td>
-            <VCheckbox v-model="device.browser" />
-          </td>
-          <td>
-            <VCheckbox v-model="device.app" />
-          </td>
-        </tr>
-      </tbody>
-    </VTable>
-    <VDivider />
+    <VCardText>
+      <VTable class="text-no-wrap border rounded mb-5">
+        <thead>
+          <tr>
+            <th scope="col">
+              Type
+            </th>
+            <th scope="col">
+              ✉️  Email
+            </th>
+            <th scope="col">
+              🖥  Browser
+            </th>
+            <th scope="col">
+              👩🏻‍💻  App
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="device in recentDevices"
+            :key="device.type"
+          >
+            <td class="text-high-emphasis">
+              {{ device.type }}
+            </td>
+            <td>
+              <VCheckbox v-model="device.email" />
+            </td>
+            <td>
+              <VCheckbox v-model="device.browser" />
+            </td>
+            <td>
+              <VCheckbox v-model="device.app" />
+            </td>
+          </tr>
+        </tbody>
+      </VTable>
+    </VCardText>
 
     <VCardText>
       <VForm @submit.prevent="() => {}">
@@ -96,7 +97,7 @@ const selectedNotification = ref('Only when I\'m online')
           </VCol>
         </VRow>
 
-        <div class="d-flex flex-wrap gap-4 mt-4">
+        <div class="d-flex flex-wrap gap-4 mt-6">
           <VBtn type="submit">
             Save Changes
           </VBtn>
@@ -112,11 +113,3 @@ const selectedNotification = ref('Only when I\'m online')
     </VCardText>
   </VCard>
 </template>
-
-<style lang="scss" scoped>
-.v-table {
-  th {
-    text-align: start !important;
-  }
-}
-</style>

@@ -1,9 +1,9 @@
-@use "@core-scss/base/mixins";
+@use "vuetify/lib/styles/tools/elevation" as elevation;
 
 .v-application .fc {
   --fc-today-bg-color: rgba(var(--v-theme-on-surface), 0.04);
   --fc-border-color: rgba(var(--v-border-color), var(--v-border-opacity));
-  --fc-neutral-bg-color: rgb(var(--v-theme-background));
+  --fc-neutral-bg-color: rgb(var(--v-theme-grey-100));
   --fc-list-event-hover-bg-color: rgba(var(--v-theme-on-surface), 0.02);
   --fc-page-bg-color: rgb(var(--v-theme-surface));
   --fc-event-border-color: currentcolor;
@@ -17,7 +17,7 @@
   }
 
   .fc-col-header-cell-cushion {
-    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
     font-size: 0.875rem;
     font-weight: 600;
   }
@@ -28,21 +28,18 @@
 
   .fc-event-time {
     font-size: 0.75rem;
-    font-weight: 500 !important;
-  }
-
-  .fc-event-title {
-    font-size: 0.75rem;
-    font-weight: 500 !important;
+    font-weight: 500;
   }
 
   .fc-timegrid-event {
     .fc-event-title {
       font-size: 0.875rem;
+      font-weight: 500;
     }
   }
 
   .fc-prev-button {
+    margin-inline-end: 6px;
     padding-inline-start: 0;
   }
 
@@ -67,7 +64,7 @@
 
     .fc-list-day-cushion.fc-cell-shaded {
       background-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
-      color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+      color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
       font-weight: 600;
     }
 
@@ -97,7 +94,7 @@
 
   .fc-header-toolbar {
     flex-wrap: wrap;
-    margin: 1.25rem;
+    margin: 1.2rem !important;
     column-gap: 0.5rem;
     row-gap: 1rem;
   }
@@ -124,22 +121,31 @@
 
     &:last-child {
       .fc-button-group {
-        border: 0.0625rem solid rgba(var(--v-border-color), var(--v-border-opacity));
+        border: 0.0625rem solid rgba(var(--v-theme-primary), 0.5);
         border-radius: 0.375rem;
 
         .fc-button {
-          font-size: 0.9rem;
-          letter-spacing: 0.0187rem;
+          background-color: rgba(var(--v-theme-primary), var(--v-activated-opacity));
+          block-size: 38px;
+          color: rgb(var(--v-theme-primary));
+          font-size: 0.875rem;
+          font-weight: 500;
+          letter-spacing: 0.025rem;
           padding-inline: 1rem;
           text-transform: uppercase;
 
+          &:not(.disabled):active {
+            background-color: rgba(var(--v-theme-primary), var(--v-activated-opacity));
+            color: rgb(var(--v-theme-primary));
+          }
+
           &:not(:last-child) {
-            border-inline-end: 0.0625rem solid rgba(var(--v-border-color), var(--v-border-opacity));
+            border-inline-end: 0.0625rem solid rgba(var(--v-theme-primary), 0.5);
           }
 
           &.fc-button-active {
-            background-color: rgba(var(--v-theme-primary), var(--v-activated-opacity));
-            color: rgb(var(--v-theme-primary));
+            background-color: rgba(var(--v-theme-primary));
+            color: #fff;
           }
         }
       }
@@ -150,7 +156,7 @@
     display: inline-block;
     color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
     font-size: 1.25rem;
-    font-weight: 500;
+    font-weight: 500 !important;
   }
 
   .fc-scrollgrid-section {
@@ -166,7 +172,6 @@
 
   .fc-event {
     border-color: transparent;
-    cursor: pointer;
     margin-block-end: 0.3rem;
     padding-block: 0.1875rem;
     padding-inline: 0.3125rem;
@@ -202,6 +207,7 @@
     color: inherit;
 
     --fc-event-border-color: currentcolor;
+    --fc-list-event-dot-width: 8px;
   }
 
   .fc-list-event {
@@ -209,7 +215,7 @@
   }
 
   .fc-popover {
-    @include mixins.elevation(3);
+    @include elevation.elevation(3);
 
     border-radius: 6px;
 
@@ -237,7 +243,7 @@
       // ℹ️ Below two `background-image` styles contains static color due to browser limitation of not parsing the css var inside CSS url()
       .fc-drawerToggler-button {
         display: none;
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' stroke='rgba(94,86,105,0.68)' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpath d='M3 12h18M3 6h18M3 18h18'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' stroke='rgba(50,71,92,0.87)' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpath d='M3 12h18M3 6h18M3 18h18'/%3E%3C/svg%3E");
         background-position: 50%;
         background-repeat: no-repeat;
         block-size: 1.5625rem;
@@ -249,8 +255,8 @@
           display: block !important;
         }
 
-        .v-theme--dark & {
-          background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' stroke='rgba(232,232,241,0.68)' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpath d='M3 12h18M3 6h18M3 18h18'/%3E%3C/svg%3E");
+        @at-root #{selector-replace(&,".v-application",".v-application .v-theme--dark")} {
+          background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' stroke='rgba(219,219,235,0.87)' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpath d='M3 12h18M3 6h18M3 18h18'/%3E%3C/svg%3E") !important;
         }
       }
     }
@@ -260,7 +266,7 @@
   .fc-col-header,
   .fc-daygrid-body,
   .fc-scrollgrid-sync-table,
-  .fc-timegrid-body,
+  .fc-timegrid-body, 
   .fc-timegrid-body table {
     inline-size: 100% !important;
   }

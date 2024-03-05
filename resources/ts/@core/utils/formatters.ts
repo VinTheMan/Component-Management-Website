@@ -44,5 +44,3 @@ export const formatDateToMonthShort = (value: string, toTimeForCurrentDay = true
 
   return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
 }
-
-export const prefixWithPlus = (value: number) => value > 0 ? `+${value}` : value

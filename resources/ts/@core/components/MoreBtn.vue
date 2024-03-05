@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import type { ItemProps } from 'vuetify/composables/item'
+
 interface Props {
-  menuList?: unknown[]
+  menuList?: ItemProps[]
   itemProps?: boolean
 }
 
@@ -8,8 +10,8 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <IconBtn>
-    <VIcon icon="bx-dots-vertical" />
+  <IconBtn size="32">
+    <VIcon icon="bx-dots-vertical-rounded" />
 
     <VMenu
       v-if="props.menuList"

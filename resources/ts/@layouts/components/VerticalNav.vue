@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { useDisplay } from 'vuetify'
-import logo from '@images/logo.svg?raw'
+import { VNodeRenderer } from './VNodeRenderer'
+import { injectionKeyIsVerticalNavHovered, useLayouts } from '@layouts'
+import { VerticalNavGroup, VerticalNavLink, VerticalNavSectionTitle } from '@layouts/components'
+import { config } from '@layouts/config'
+import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '@layouts/types'
 
 interface Props {
   tag?: string | Component
+  navItems: VerticalNavItems
   isOverlayNavActive: boolean
   toggleIsOverlayNavActive: (value: boolean) => void
 }
@@ -14,9 +18,26 @@ const props = withDefaults(defineProps<Props>(), {
   tag: 'aside',
 })
 
-const { mdAndDown } = useDisplay()
-
 const refNav = ref()
+
+const { width: windowWidth } = useWindowSize()
+
+const isHovered = useElementHover(refNav)
+
+provide(injectionKeyIsVerticalNavHovered, isHovered)
+
+const { isVerticalNavCollapsed: isCollapsed, isLessThanOverlayNavBreakpoint, isVerticalNavMini, isAppRtl } = useLayouts()
+
+const hideTitleAndIcon = isVerticalNavMini(windowWidth, isHovered)
+
+const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup) => {
+  if ('heading' in item)
+    return VerticalNavSectionTitle
+  if ('children' in item)
+    return VerticalNavGroup
+
+  return VerticalNavLink
+}
 
 /*
   ℹ️ Close overlay side when route is changed
@@ -24,11 +45,9 @@ const refNav = ref()
 */
 const route = useRoute()
 
-watch(
-  () => route.path,
-  () => {
-    props.toggleIsOverlayNavActive(false)
-  })
+watch(() => route.name, () => {
+  props.toggleIsOverlayNavActive(false)
+})
 
 const isVerticalNavScrolled = ref(false)
 const updateIsVerticalNavScrolled = (val: boolean) => isVerticalNavScrolled.value = val
@@ -45,9 +64,10 @@ const handleNavScroll = (evt: Event) => {
     class="layout-vertical-nav"
     :class="[
       {
+        'overlay-nav': isLessThanOverlayNavBreakpoint(windowWidth),
+        'hovered': isHovered,
         'visible': isOverlayNavActive,
         'scrolled': isVerticalNavScrolled,
-        'overlay-nav': mdAndDown,
       },
     ]"
   >
@@ -56,17 +76,45 @@ const handleNavScroll = (evt: Event) => {
       <slot name="nav-header">
         <RouterLink
           to="/"
-          class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
+          class="app-logo d-flex align-center gap-x-2 app-title-wrapper"
         >
-          <div
-            class="d-flex"
-            v-html="logo"
-          />
+          <VNodeRenderer :nodes="config.app.logo" />
 
-          <h1 class="leading-normal">
-            sneat
-          </h1>
+          <Transition name="vertical-nav-app-title">
+            <h1
+              v-show="!hideTitleAndIcon"
+              class="leading-normal"
+            >
+              {{ config.app.title }}
+            </h1>
+          </Transition>
         </RouterLink>
+        <!-- 👉 Vertical nav actions -->
+        <!-- Show toggle collapsible in >md and close button in <md -->
+        <template v-if="!isLessThanOverlayNavBreakpoint(windowWidth)">
+          <Component
+            :is="config.app.iconRenderer || 'div'"
+            v-show="isCollapsed && !hideTitleAndIcon"
+            class="header-action"
+            v-bind="config.icons.verticalNavUnPinned"
+            @click="isCollapsed = !isCollapsed"
+          />
+          <Component
+            :is="config.app.iconRenderer || 'div'"
+            v-show="!isCollapsed && !hideTitleAndIcon"
+            class="header-action"
+            v-bind="config.icons.verticalNavPinned"
+            @click="isCollapsed = !isCollapsed"
+          />
+        </template>
+        <template v-else>
+          <Component
+            :is="config.app.iconRenderer || 'div'"
+            class="header-action"
+            v-bind="config.icons.close"
+            @click="toggleIsOverlayNavActive(false)"
+          />
+        </template>
       </slot>
     </div>
     <slot name="before-nav-items">
@@ -77,16 +125,20 @@ const handleNavScroll = (evt: Event) => {
       :update-is-vertical-nav-scrolled="updateIsVerticalNavScrolled"
     >
       <PerfectScrollbar
+        :key="isAppRtl"
         tag="ul"
         class="nav-items"
         :options="{ wheelPropagation: false }"
         @ps-scroll-y="handleNavScroll"
       >
-        <slot />
+        <Component
+          :is="resolveNavItemComponent(item)"
+          v-for="(item, index) in navItems"
+          :key="index"
+          :item="item"
+        />
       </PerfectScrollbar>
     </slot>
-
-    <slot name="after-nav-items" />
   </Component>
 </template>
 

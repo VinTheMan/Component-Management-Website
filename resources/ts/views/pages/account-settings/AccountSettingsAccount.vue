@@ -19,8 +19,11 @@ const accountData = {
 
 const refInputEl = ref<HTMLElement>()
 
+const isConfirmDialogOpen = ref(false)
 const accountDataLocal = ref(structuredClone(accountData))
 const isAccountDeactivated = ref(false)
+
+const validateAccountDeactivation = [(v: string) => !!v || 'Please confirm account deactivation']
 
 const resetForm = () => {
   accountDataLocal.value = structuredClone(accountData)
@@ -110,15 +113,14 @@ const currencies = [
         <VCardText class="d-flex">
           <!-- 👉 Avatar -->
           <VAvatar
-            rounded="lg"
             size="100"
-            class="me-6"
+            class="user-profile me-6"
             :image="accountDataLocal.avatarImg"
           />
 
           <!-- 👉 Upload Photo -->
-          <form class="d-flex flex-column justify-center gap-5">
-            <div class="d-flex flex-wrap gap-2">
+          <form class="d-flex flex-column justify-center gap-4">
+            <div class="d-flex flex-wrap gap-4">
               <VBtn
                 color="primary"
                 @click="refInputEl?.click()"
@@ -153,7 +155,7 @@ const currencies = [
               </VBtn>
             </div>
 
-            <p class="text-body-1 mb-0">
+            <p class="text-xs mb-0 text-medium-emphasis">
               Allowed JPG, GIF or PNG. Max size of 800K
             </p>
           </form>
@@ -172,7 +174,6 @@ const currencies = [
               >
                 <VTextField
                   v-model="accountDataLocal.firstName"
-                  placeholder="John"
                   label="First Name"
                 />
               </VCol>
@@ -184,7 +185,6 @@ const currencies = [
               >
                 <VTextField
                   v-model="accountDataLocal.lastName"
-                  placeholder="Doe"
                   label="Last Name"
                 />
               </VCol>
@@ -197,7 +197,6 @@ const currencies = [
                 <VTextField
                   v-model="accountDataLocal.email"
                   label="E-mail"
-                  placeholder="johndoe@gmail.com"
                   type="email"
                 />
               </VCol>
@@ -210,7 +209,6 @@ const currencies = [
                 <VTextField
                   v-model="accountDataLocal.org"
                   label="Organization"
-                  placeholder="ThemeSelection"
                 />
               </VCol>
 
@@ -222,7 +220,6 @@ const currencies = [
                 <VTextField
                   v-model="accountDataLocal.phone"
                   label="Phone Number"
-                  placeholder="+1 (917) 543-9876"
                 />
               </VCol>
 
@@ -234,7 +231,6 @@ const currencies = [
                 <VTextField
                   v-model="accountDataLocal.address"
                   label="Address"
-                  placeholder="123 Main St, New York, NY 10001"
                 />
               </VCol>
 
@@ -246,7 +242,6 @@ const currencies = [
                 <VTextField
                   v-model="accountDataLocal.state"
                   label="State"
-                  placeholder="New York"
                 />
               </VCol>
 
@@ -258,7 +253,6 @@ const currencies = [
                 <VTextField
                   v-model="accountDataLocal.zip"
                   label="Zip Code"
-                  placeholder="10001"
                 />
               </VCol>
 
@@ -271,7 +265,6 @@ const currencies = [
                   v-model="accountDataLocal.country"
                   label="Country"
                   :items="['USA', 'Canada', 'UK', 'India', 'Australia']"
-                  placeholder="Select Country"
                 />
               </VCol>
 
@@ -283,7 +276,6 @@ const currencies = [
                 <VSelect
                   v-model="accountDataLocal.language"
                   label="Language"
-                  placeholder="Select Language"
                   :items="['English', 'Spanish', 'Arabic', 'Hindi', 'Urdu']"
                 />
               </VCol>
@@ -296,7 +288,6 @@ const currencies = [
                 <VSelect
                   v-model="accountDataLocal.timezone"
                   label="Timezone"
-                  placeholder="Select Timezone"
                   :items="timezones"
                   :menu-props="{ maxHeight: 200 }"
                 />
@@ -310,7 +301,6 @@ const currencies = [
                 <VSelect
                   v-model="accountDataLocal.currency"
                   label="Currency"
-                  placeholder="Select Currency"
                   :items="currencies"
                   :menu-props="{ maxHeight: 200 }"
                 />
@@ -339,12 +329,14 @@ const currencies = [
     </VCol>
 
     <VCol cols="12">
-      <!-- 👉 Deactivate Account -->
-      <VCard title="Deactivate Account">
+      <!-- 👉 Delete Account -->
+      <VCard title="Delete Account">
         <VCardText>
+          <!-- 👉 Checkbox and Button  -->
           <div>
             <VCheckbox
               v-model="isAccountDeactivated"
+              :rules="validateAccountDeactivation"
               label="I confirm my account deactivation"
             />
           </div>
@@ -353,6 +345,7 @@ const currencies = [
             :disabled="!isAccountDeactivated"
             color="error"
             class="mt-3"
+            @click="isConfirmDialogOpen = true"
           >
             Deactivate Account
           </VBtn>
@@ -360,4 +353,20 @@ const currencies = [
       </VCard>
     </VCol>
   </VRow>
+
+  <!-- Confirm Dialog -->
+  <ConfirmDialog
+    v-model:isDialogVisible="isConfirmDialogOpen"
+    confirmation-question="Are you sure you want to deactivate your account?"
+    confirm-title="Deactivated!"
+    confirm-msg="Your account has been deactivated successfully."
+    cancel-title="Cancelled"
+    cancel-msg="Account Deactivation Cancelled!"
+  />
 </template>
+
+<style lang="scss" scoped>
+.user-profile {
+  border-radius: 8px;
+}
+</style>

@@ -113,9 +113,6 @@ const sources: BundleScriptConfig = {
         'alpha-g',
         'alpha-b',
         'map-marker-off-outline',
-        'alpha-t-box-outline',
-        'form-select',
-        'account-cog-outline',
         'laptop',
       ],
     },
@@ -131,6 +128,7 @@ const sources: BundleScriptConfig = {
     //     'image-twotone',
     //   ],
     // },
+
   ],
 }
 

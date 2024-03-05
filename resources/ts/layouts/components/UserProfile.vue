@@ -1,22 +1,53 @@
 <script setup lang="ts">
-import avatar1 from '@images/avatars/avatar-1.png'
+import { initialAbility } from '@/plugins/casl/ability'
+import { useAppAbility } from '@/plugins/casl/useAppAbility'
+
+const router = useRouter()
+const ability = useAppAbility()
+const userData = JSON.parse(localStorage.getItem('userData') || 'null')
+
+const logout = () => {
+  // Remove "userData" from localStorage
+  localStorage.removeItem('userData')
+
+  // Remove "accessToken" from localStorage
+  localStorage.removeItem('accessToken')
+
+  // Redirect to login page
+  router.push('/login')
+    .then(() => {
+      // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
+      // Remove "userAbilities" from localStorage
+      localStorage.removeItem('userAbilities')
+
+      // Reset ability to initial ability
+      ability.update(initialAbility)
+    })
+}
 </script>
 
 <template>
   <VBadge
     dot
+    bordered
     location="bottom right"
     offset-x="3"
     offset-y="3"
     color="success"
-    bordered
   >
     <VAvatar
       class="cursor-pointer"
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1" />
+      <VImg
+        v-if="userData && userData.avatar"
+        :src="userData.avatar"
+      />
+      <VIcon
+        v-else
+        icon="bx-user"
+      />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -41,21 +72,29 @@ import avatar1 from '@images/avatars/avatar-1.png'
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                    <VImg
+                      v-if="userData && userData.avatar"
+                      :src="userData.avatar"
+                    />
+                    <VIcon
+                      v-else
+                      icon="bx-user"
+                    />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ userData.fullName || userData.username }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemSubtitle>{{ userData.role }}</VListItemSubtitle>
           </VListItem>
+
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem :to="{ name: 'apps-user-view-id', params: { id: 21 } }">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -68,7 +107,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- 👉 Settings -->
-          <VListItem link>
+          <VListItem :to="{ name: 'pages-account-settings-tab', params: { tab: 'account' } }">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -81,7 +120,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- 👉 Pricing -->
-          <VListItem link>
+          <VListItem :to="{ name: 'pages-pricing' }">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -94,7 +133,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- 👉 FAQ -->
-          <VListItem link>
+          <VListItem :to="{ name: 'pages-faq' }">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -110,7 +149,10 @@ import avatar1 from '@images/avatars/avatar-1.png'
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem
+            link
+            @click="logout"
+          >
             <template #prepend>
               <VIcon
                 class="me-2"

@@ -18,6 +18,9 @@
       "@/*": [
         "resources/ts/*"
       ],
+      "@themeConfig": [
+        "themeConfig.ts"
+      ],
       "@layouts/*": [
         "resources/ts/@layouts/*"
       ],
@@ -35,6 +38,12 @@
       ],
       "@styles/*": [
         "resources/styles/*"
+      ],
+      "@axios": [
+        "resources/ts/plugins/axios"
+      ],
+      "@validators": [
+        "resources/ts/@core/utils/validators"
       ],
       "@core-scss/*": [
         "resources/styles/@core"

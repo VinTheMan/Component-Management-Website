@@ -1,14 +1,16 @@
 import type { VuetifyOptions } from 'vuetify'
+import { resolveVuetifyTheme } from '@core/utils/vuetify'
+import { themeConfig } from '@themeConfig'
 
 export const staticPrimaryColor = '#696CFF'
 
 const theme: VuetifyOptions['theme'] = {
-  defaultTheme: 'dark',
+  defaultTheme: resolveVuetifyTheme(),
   themes: {
     light: {
       dark: false,
       colors: {
-        'primary': '#696CFF',
+        'primary': localStorage.getItem(`${themeConfig.app.title}-lightThemePrimaryColor`) || staticPrimaryColor,
         'on-primary': '#fff',
         'secondary': '#8592A3',
         'on-secondary': '#fff',
@@ -46,7 +48,6 @@ const theme: VuetifyOptions['theme'] = {
         'snackbar-color': '#ffffff',
         'tooltip-background': '#262732',
         'tooltip-opacity': 0.9,
-        'table-header-background': '#F5F5F7',
 
         // Shadows
         'shadow-key-umbra-opacity': 'rgba(var(--v-theme-on-surface), 0.06)',
@@ -57,7 +58,7 @@ const theme: VuetifyOptions['theme'] = {
     dark: {
       dark: true,
       colors: {
-        'primary': '#696CFF',
+        'primary': localStorage.getItem(`${themeConfig.app.title}-darkThemePrimaryColor`) || staticPrimaryColor,
         'on-primary': '#fff',
         'secondary': '#8592A3',
         'on-secondary': '#fff',
@@ -95,7 +96,6 @@ const theme: VuetifyOptions['theme'] = {
         'snackbar-color': '#2B2C40',
         'tooltip-background': '#464A65',
         'tooltip-opacity': 0.9,
-        'table-header-background': '#3A3E5B',
 
         // Shadows
         'shadow-key-umbra-opacity': 'rgba(20, 21, 33, 0.06)',
