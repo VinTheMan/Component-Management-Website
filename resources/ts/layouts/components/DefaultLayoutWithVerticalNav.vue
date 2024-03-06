@@ -9,6 +9,7 @@ import NavBarI18n from '@/layouts/components/NavBarI18n.vue'
 import NavBarNotifications from '@/layouts/components/NavBarNotifications.vue'
 import NavbarShortcuts from '@/layouts/components/NavbarShortcuts.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
+import NavbarColorPicker from '@/layouts/components/NavbarColorPicker.vue'
 import NavSearchBar from '@/layouts/components/NavSearchBar.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 
@@ -50,7 +51,8 @@ const globalThemeBackground = computed(() => global.current.value.colors.backgro
 
         <NavBarI18n />
         <NavbarThemeSwitcher />
-        <NavbarShortcuts />
+        <!-- <NavbarShortcuts /> -->
+        <NavbarColorPicker />
         <NavBarNotifications class="me-2" />
         <UserProfile />
       </div>

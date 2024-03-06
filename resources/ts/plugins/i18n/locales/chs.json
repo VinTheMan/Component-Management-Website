@@ -1,10 +1,16 @@
 {
+  "THEME CUSTOMIZER": "主题",
+  "Customize in Real Time": "更换网站颜色、排版",
+  "Primary Color": "颜色",
+  "Menu Type": "排版",
+  "Vertical": "垂直",
+  "Horizontal": "水平",
   "UI Elements": "界面元素",
   "Forms & Tables": "表单与表格",
   "Pages": "页面",
   "Charts & Maps": "图表与地图",
   "Others": "其他",
-  "Typography": "排版",
+  "Typography": "大小",
   "Cards": "卡片",
   "Basic": "基础",
   "Advance": "高级",
@@ -114,7 +120,7 @@
   "Custom Input": "自定义输入",
   "Widgets": "小部件",
   "eCommerce": "电子商务",
-  "New": "新",
+  "New": "New",
   "$vuetify": {
     "badge": "徽章",
     "pagination": {

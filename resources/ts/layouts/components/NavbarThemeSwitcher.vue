@@ -2,13 +2,17 @@
 import type { ThemeSwitcherTheme } from '@layouts/types'
 
 const themes: ThemeSwitcherTheme[] = [
-  {
-    name: 'system',
-    icon: 'mdi-laptop',
-  },
+  // {
+  //   name: 'system',
+  //   icon: 'mdi-laptop',
+  // },
   {
     name: 'light',
     icon: 'bx-sun',
+  },
+  {
+    name: 'semi-dark',
+    icon: 'bxs-sun',
   },
   {
     name: 'dark',
